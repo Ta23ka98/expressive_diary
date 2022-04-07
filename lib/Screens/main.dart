@@ -1,11 +1,13 @@
+import 'package:expressive_diary/Screens/menu_screen.dart';
+import 'package:expressive_diary/Screens/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'basic_example.dart';
-import 'complex_example.dart';
-import 'events_example.dart';
-import 'multi_example.dart';
-import 'range_example.dart';
+import '../complex_example.dart';
+import '../events_example.dart';
+import '../multi_example.dart';
+import '../range_example.dart';
 
 void main() => runApp(const MyApp());
 
@@ -99,10 +101,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
-    TableBasicsExample(),
-    TableRangeExample(),
     TableEventsExample(),
-    TableComplexExample(),
+    UserScreen(),
+    TableBasicsExample(),
+    MenuScreen(),
   ];
 
   void _onItemTapped(int index) {
