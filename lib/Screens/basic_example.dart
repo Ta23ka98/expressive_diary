@@ -57,7 +57,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: null,
+        onPressed: addEvent,
       ),
     );
   }
