@@ -12,6 +12,8 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  void addEvent() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +54,10 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
           // No need to call `setState()` here
           _focusedDay = focusedDay;
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: null,
       ),
     );
   }
