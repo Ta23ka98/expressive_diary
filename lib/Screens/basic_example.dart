@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class TableBasicsExample extends StatefulWidget {
   @override
@@ -12,13 +15,25 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  void addEvent() {}
+  CollectionReference events = FirebaseFirestore.instance.collection('Events');
+
+  void printData() {
+    print("Added?");
+  }
+
+  Future<void> addEvent() {
+    return events
+        .doc()
+        .set({'full_name': "Mary Jane", 'age': 18})
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Basics'),
+        title: const Text('TableCalendar - Basics'),
       ),
       body: TableCalendar(
         firstDay: kFirstDay,
@@ -56,7 +71,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: addEvent,
       ),
     );
