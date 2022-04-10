@@ -17,16 +17,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  CollectionReference events = FirebaseFirestore.instance.collection('Events');
-
-  Future<void> addEvent() {
-    return events
-        .doc()
-        .set({'diaryContent': "Mary Jane", 'diaryDateTime': _focusedDay})
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
