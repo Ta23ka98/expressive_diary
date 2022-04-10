@@ -6,10 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'basic_example.dart';
-import '../complex_example.dart';
 import '../events_example.dart';
-import '../multi_example.dart';
-import '../range_example.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,70 +28,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class StartPage extends StatefulWidget {
-  @override
-  _StartPageState createState() => _StartPageState();
-}
-
-class _StartPageState extends State<StartPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('TableCalendar Example'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              child: const Text('Basics'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => TableBasicsExample()),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            ElevatedButton(
-              child: const Text('Range Selection'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => TableRangeExample()),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            ElevatedButton(
-              child: const Text('Events'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => TableEventsExample()),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            ElevatedButton(
-              child: const Text('Multiple Selection'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => TableMultiExample()),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            ElevatedButton(
-              child: const Text('Complex'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => TableComplexExample()),
-              ),
-            ),
-            const SizedBox(height: 20.0),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
 
@@ -107,10 +40,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
-    TableBasicsExample(),
+    DiaryScreen(),
     const UserScreen(),
     TableEventsExample(),
-    const MenuScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -139,10 +71,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: 'User',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calender',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: 'Menu',
           ),
@@ -155,3 +83,67 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+
+// class StartPage extends StatefulWidget {
+//   @override
+//   _StartPageState createState() => _StartPageState();
+// }
+//
+// class _StartPageState extends State<StartPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('TableCalendar Example'),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             const SizedBox(height: 20.0),
+//             ElevatedButton(
+//               child: const Text('Basics'),
+//               onPressed: () => Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (_) => DiaryScreen()),
+//               ),
+//             ),
+//             const SizedBox(height: 12.0),
+//             ElevatedButton(
+//               child: const Text('Range Selection'),
+//               onPressed: () => Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (_) => TableRangeExample()),
+//               ),
+//             ),
+//             const SizedBox(height: 12.0),
+//             ElevatedButton(
+//               child: const Text('Events'),
+//               onPressed: () => Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (_) => TableEventsExample()),
+//               ),
+//             ),
+//             const SizedBox(height: 12.0),
+//             ElevatedButton(
+//               child: const Text('Multiple Selection'),
+//               onPressed: () => Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (_) => TableMultiExample()),
+//               ),
+//             ),
+//             const SizedBox(height: 12.0),
+//             ElevatedButton(
+//               child: const Text('Complex'),
+//               onPressed: () => Navigator.push(
+//                 context,
+//                 MaterialPageRoute(builder: (_) => TableComplexExample()),
+//               ),
+//             ),
+//             const SizedBox(height: 20.0),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

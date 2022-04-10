@@ -3,28 +3,26 @@ import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'add_event_screen.dart';
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-class TableBasicsExample extends StatefulWidget {
+class DiaryScreen extends StatefulWidget {
   @override
-  _TableBasicsExampleState createState() => _TableBasicsExampleState();
+  _DiaryScreenState createState() => _DiaryScreenState();
 }
 
-class _TableBasicsExampleState extends State<TableBasicsExample> {
+class _DiaryScreenState extends State<DiaryScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
   CollectionReference events = FirebaseFirestore.instance.collection('Events');
 
-  void printData() {
-    print("Added?");
-  }
-
   Future<void> addEvent() {
     return events
         .doc()
-        .set({'full_name': "Mary Jane", 'age': 18})
+        .set({'diaryContent': "Mary Jane", 'diaryDateTime': _focusedDay})
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
@@ -72,7 +70,13 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: addEvent,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddEventScreen(),
+              ));
+        },
       ),
     );
   }
