@@ -10,6 +10,7 @@ class AddEventScreen extends StatefulWidget {
 
 class _AddEventScreenState extends State<AddEventScreen> {
   final TextEditingController _textEditingController = TextEditingController();
+  int charLength = 0;
   String _text = '';
   final DateTime _focusedDay = DateTime.now();
   CollectionReference events = FirebaseFirestore.instance.collection('Events');
@@ -35,6 +36,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   void _handleText(String e) {
     setState(() {
       _text = e;
+      charLength = _text.length;
     });
   }
 
@@ -93,7 +95,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               height: 50,
               child: ElevatedButton(
                 onPressed: addEvent,
-                child: const Text("完了"),
+                child: Text(charLength.toString()),
               ),
             )
           ],
