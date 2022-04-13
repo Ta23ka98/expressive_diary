@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({Key? key}) : super(key: key);
@@ -16,21 +17,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
   CollectionReference events = FirebaseFirestore.instance.collection('Events');
 
   @override
-  void initState() {
-    super.initState();
-    _textEditingController.addListener(_printLatestValue);
-    print("controller has been set!");
-  }
-
-  _printLatestValue() {
-    print("入力状況: ${_textEditingController.text}");
-  }
-
-  @override
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
-    print("controller disposed!");
   }
 
   void _handleText(String e) {
@@ -40,18 +29,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
     });
   }
 
-  void _submission(String e) {
-    print(_textEditingController.text);
-    _textEditingController.clear();
-    setState(() {
-      _text = '';
-    });
-  }
-
   Future<void> addEvent() {
     return events
         .doc()
-        .set({'diaryContent': _text, 'diaryDateTime': _focusedDay})
+        .set({
+          'diaryContent': _text,
+          'diaryDateTime': _focusedDay,
+          'wordCount': charLength
+        })
         .then(
           (value) => print("Event Added!!!"),
         )
@@ -63,11 +48,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("AddEventScreen"),
       ),
       body: Container(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -83,19 +69,23 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   border: Border.all(color: Colors.blue, width: 1)),
               child: TextField(
                 decoration: const InputDecoration(
-                    border: InputBorder.none, hintText: "　日記を書いてスッキリしよう！👍"),
+                    border: InputBorder.none, hintText: " 日記を書こう！"),
                 controller: _textEditingController,
                 onChanged: _handleText,
-                onSubmitted: _submission,
               ),
             ),
             const SizedBox(height: 20),
-            Container(
+            Text(
+              "${charLength.toString()}字！",
+              style: const TextStyle(fontSize: 15),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 onPressed: addEvent,
-                child: Text(charLength.toString()),
+                child: const Text("完了"),
               ),
             )
           ],
