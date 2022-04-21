@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'basic_example.dart';
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({Key? key}) : super(key: key);
@@ -30,6 +31,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
 
   Future<void> addEvent() {
+    Navigator.pop(context);
+    setState(() {});
+    if (_textEditingController.text.isEmpty) {
+    } else {
+      if (selectedEvents[_focusedDay] != null) {
+        selectedEvents[_focusedDay]!.add(
+          Event(title: _textEditingController.text),
+        );
+      }
+    }
     return events
         .doc()
         .set({
