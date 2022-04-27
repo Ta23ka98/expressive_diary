@@ -32,14 +32,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   Future<void> addEvent() {
     Navigator.pop(context);
-    setState(() {});
     if (_textEditingController.text.isEmpty) {
     } else {
-      if (kEventSource[_focusedDay] != null) {
-        kEventSource[_focusedDay]!.add(
-          Event(title: _textEditingController.text),
-        );
-      }
+      print("ブレークポイント");
+      kEventSource = {
+        _focusedDay: [Event(title: _textEditingController.text)]
+      };
+      print(kEventSource);
+      setState(() {});
     }
     return events
         .doc()

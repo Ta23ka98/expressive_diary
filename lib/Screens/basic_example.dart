@@ -23,7 +23,9 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(kEventSource);
 
-Map<DateTime, List<Event>> kEventSource = {};
+Map<DateTime, List<Event>> kEventSource = {
+  DateTime.now(): [Event(title: "今日の日記")],
+};
 
 List<Event> _getEventsForDay(DateTime day) {
   // Implementation example
@@ -53,7 +55,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   @override
   void dispose() {
-    //_selectedEvents.dispose();
+    _selectedEvents.dispose();
     super.dispose();
   }
 
