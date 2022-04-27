@@ -79,11 +79,17 @@ class _DiaryScreenState extends State<DiaryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TableCalendar - Basics'),
-      ),
       body: Column(
         children: [
+          const SizedBox(
+            child: Center(
+                child: Text(
+              "日記画面",
+              style: TextStyle(fontSize: 15),
+            )),
+            height: 60,
+          ),
+          const Divider(),
           TableCalendar<Event>(
             firstDay: kFirstDay,
             lastDay: kLastDay,

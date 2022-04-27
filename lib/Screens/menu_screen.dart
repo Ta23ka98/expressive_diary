@@ -5,6 +5,26 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Card(
+      child: Column(
+        children: const [
+          SizedBox(
+            child: Center(
+                child: Text(
+              "メニュー画面",
+              style: TextStyle(fontSize: 15),
+            )),
+            height: 60,
+          ),
+          Divider(),
+          ListTile(title: Text('アプリの使い方')),
+          Divider(),
+          ListTile(title: Text('利用規約')),
+          Divider(),
+          ListTile(title: Text('プライバシーポリシー')),
+          Divider(),
+        ],
+      ),
+    );
   }
 }

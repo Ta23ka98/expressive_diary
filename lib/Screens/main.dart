@@ -42,7 +42,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final List<Widget> _widgetOptions = <Widget>[
     DiaryScreen(),
     const UserScreen(),
-    TableEventsExample(),
+    const MenuScreen(),
   ];
 
   void _onItemTapped(int index) {
