@@ -8,49 +8,31 @@ import 'add_event_screen.dart';
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 Map<DateTime, List<Event>> selectedEvents = {};
 DateTime _focusedDay = DateTime.now();
-//
-// final _kEventSource = {
-//   for (var item in List.generate(50, (index) => index))
-//     DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5): List.generate(
-//         item % 4 + 1, (index) => Event('Event $item | ${index + 1}'))
-// }..addAll({
-//     kToday: [
-//       const Event('Today\'s Event 1'),
-//       const Event('Today\'s Event 2'),
-//     ],
-//   });
-//
-// final kEventSource = {
-//   for (var item in List.generate(50, (index) => index))
-//     DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5): List.generate(
-//         item % 4 + 1, (index) => Event('Event $item | ${index + 1}'))
-// }..addAll({
-//     kToday: [
-//       const Event('Today\'s Event 1'),
-//       const Event('Today\'s Event 2'),
-//     ],
-//   });
 
 /// Example event class.
 class Event {
   final String title;
   const Event({required this.title});
-
   @override
   String toString() => title;
 }
 
-/// Example events.
-///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-// final kEvents = LinkedHashMap<DateTime, List<Event>>(
-//   equals: isSameDay,
-//   hashCode: getHashCode,
-// )..addAll(kEventSource);
-//
-// int getHashCode(DateTime key) {
-//   return key.day * 1000000 + key.month * 10000 + key.year;
-// }
+final kEvents = LinkedHashMap<DateTime, List<Event>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+)..addAll(kEventSource);
+
+Map<DateTime, List<Event>> kEventSource = {};
+
+List<Event> _getEventsForDay(DateTime day) {
+  // Implementation example
+  return kEvents[day] ?? [];
+}
+
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
+}
 
 class DiaryScreen extends StatefulWidget {
   @override
@@ -58,30 +40,22 @@ class DiaryScreen extends StatefulWidget {
 }
 
 class _DiaryScreenState extends State<DiaryScreen> {
-  Map<DateTime, List<Event>> selectedEvents = {};
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
   DateTime? _selectedDay;
 
   @override
   void initState() {
     super.initState();
-    selectedEvents = {};
     _selectedDay = _focusedDay;
-    // _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
   @override
   void dispose() {
-    _selectedEvents.dispose();
+    //_selectedEvents.dispose();
     super.dispose();
   }
-
-  // List<Event> _getEventsForDay(DateTime day) {
-  //   // Implementation example
-  //   return kEvents[day] ?? [];
-  // }
 
   List<Event> _getEventsFromDay(DateTime date) {
     // Implementation example
@@ -90,12 +64,13 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-      });
-
-      //_selectedEvents.value = _getEventsForDay(selectedDay);
+      setState(
+        () {
+          _selectedDay = selectedDay;
+          _focusedDay = focusedDay;
+        },
+      );
+      _selectedEvents.value = _getEventsForDay(selectedDay);
     }
   }
 
@@ -111,7 +86,9 @@ class _DiaryScreenState extends State<DiaryScreen> {
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            selectedDayPredicate: (DateTime date) {
+              return isSameDay(_selectedDay, date);
+            },
             calendarFormat: _calendarFormat,
             eventLoader: _getEventsFromDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
@@ -131,38 +108,33 @@ class _DiaryScreenState extends State<DiaryScreen> {
               _focusedDay = focusedDay;
             },
           ),
-          ..._getEventsFromDay(_focusedDay).map(
-            (Event event) => ListTile(
-              title: Text(event.title),
+          const SizedBox(height: 8.0),
+          Expanded(
+            child: ValueListenableBuilder<List<Event>>(
+              valueListenable: _selectedEvents,
+              builder: (context, value, _) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: ListTile(
+                        onTap: () => print('${value[index]}'),
+                        title: Text('${value[index]}'),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
-          const SizedBox(height: 8.0),
-          // Expanded(
-          //   child: ValueListenableBuilder<List<Event>>(
-          //     valueListenable: _selectedEvents,
-          //     builder: (context, value, _) {
-          //       return ListView.builder(
-          //         itemCount: value.length,
-          //         itemBuilder: (context, index) {
-          //           return Container(
-          //             margin: const EdgeInsets.symmetric(
-          //               horizontal: 12.0,
-          //               vertical: 4.0,
-          //             ),
-          //             decoration: BoxDecoration(
-          //               border: Border.all(),
-          //               borderRadius: BorderRadius.circular(12.0),
-          //             ),
-          //             child: ListTile(
-          //               onTap: () => print('${value[index]}'),
-          //               title: Text('${value[index]}'),
-          //             ),
-          //           );
-          //         },
-          //       );
-          //     },
-          //   ),
-          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -181,7 +153,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
 
 class GetUserName extends StatelessWidget {
   final String documentId;
-
   GetUserName(this.documentId);
 
   @override

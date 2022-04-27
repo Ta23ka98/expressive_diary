@@ -35,8 +35,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
     setState(() {});
     if (_textEditingController.text.isEmpty) {
     } else {
-      if (selectedEvents[_focusedDay] != null) {
-        selectedEvents[_focusedDay]!.add(
+      if (kEventSource[_focusedDay] != null) {
+        kEventSource[_focusedDay]!.add(
           Event(title: _textEditingController.text),
         );
       }
