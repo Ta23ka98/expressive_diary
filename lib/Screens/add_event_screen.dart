@@ -34,10 +34,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
     Navigator.pop(context);
     if (_textEditingController.text.isEmpty) {
     } else {
-      print("ブレークポイント");
-      kEventSource = {
+      //print("ブレークポイント");
+      // kEventSource = {
+      //   _focusedDay: [Event(title: _textEditingController.text)]
+      // };
+      kEventSource.addAll({
         _focusedDay: [Event(title: _textEditingController.text)]
-      };
+      });
       print(kEventSource);
       setState(() {});
     }

@@ -23,17 +23,17 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(kEventSource);
 
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
+}
+
 Map<DateTime, List<Event>> kEventSource = {
-  DateTime.now(): [Event(title: "今日の日記")],
+  _focusedDay: [Event(title: "今日の日記")],
 };
 
 List<Event> _getEventsForDay(DateTime day) {
   // Implementation example
   return kEvents[day] ?? [];
-}
-
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
 class DiaryScreen extends StatefulWidget {
