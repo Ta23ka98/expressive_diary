@@ -18,23 +18,29 @@ class Event {
 }
 
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
+var kEvents = LinkedHashMap<DateTime, List<Event>>(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(kEventSource);
+
+var todayListEvents = kEvents[_focusedDay]?.toList();
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
-Map<DateTime, List<Event>> kEventSource = {
-  _focusedDay: [Event(title: "今日の日記")],
-};
-
 List<Event> _getEventsForDay(DateTime day) {
   // Implementation example
   return kEvents[day] ?? [];
 }
+
+Map<DateTime, List<Event>> kEventSource = {
+  _focusedDay: [Event(title: "今日の日記")],
+  DateTime(2022, 4, 28, 12, 15): [
+    Event(title: "4/28-1"),
+    Event(title: "4/28-2")
+  ],
+};
 
 class DiaryScreen extends StatefulWidget {
   @override
@@ -42,15 +48,16 @@ class DiaryScreen extends StatefulWidget {
 }
 
 class _DiaryScreenState extends State<DiaryScreen> {
-  late final ValueNotifier<List<Event>> _selectedEvents;
+  DateTime? _selectedDay = _focusedDay;
+  late final ValueNotifier<List<Event>> _selectedEvents =
+      ValueNotifier(_getEventsForDay(_selectedDay!));
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime? _selectedDay;
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    //_selectedDay = _focusedDay;
+    //_selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
   @override
@@ -59,10 +66,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
     super.dispose();
   }
 
-  List<Event> _getEventsFromDay(DateTime date) {
-    // Implementation example
-    return selectedEvents[date] ?? [];
-  }
+  // List<Event> _getEventsFromDay(DateTime date) {
+  //   // Implementation example
+  //   return selectedEvents[date] ?? [];
+  // }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
@@ -98,7 +105,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
               return isSameDay(_selectedDay, date);
             },
             calendarFormat: _calendarFormat,
-            eventLoader: _getEventsFromDay,
+            eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: const CalendarStyle(
               // Use `CalendarStyle` to customize the UI

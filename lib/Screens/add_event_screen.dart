@@ -30,6 +30,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
     });
   }
 
+  //①ローカルに保存しつつ、
+  //②kEventsに2つ以上のイベントを追加できるようにする？
+  //
+  //①putIfAbsentを使い、
+  //②kEventsSourceを無くし(kEvents = {};にする)
   Future<void> addEvent() {
     Navigator.pop(context);
     if (_textEditingController.text.isEmpty) {
@@ -38,10 +43,20 @@ class _AddEventScreenState extends State<AddEventScreen> {
       // kEventSource = {
       //   _focusedDay: [Event(title: _textEditingController.text)]
       // };
-      kEventSource.addAll({
+      //todayListEvents?.add(Event(title: _textEditingController.text));
+      kEvents.addAll({
         _focusedDay: [Event(title: _textEditingController.text)]
       });
-      print(kEventSource);
+      kEvents.addAll({
+        DateTime(2022, 4, 30, 12, 15): [
+          Event(title: _textEditingController.text)
+        ]
+      });
+      //DateTime(2022, 4, 30, 12, 15)
+      // kEvents.putIfAbsent(
+      //     _focusedDay, () => [Event(title: _textEditingController.text)]);
+      //print("kEventSource：${kEventSource}");
+      print("kEvents:${kEvents}");
       setState(() {});
     }
     return events
