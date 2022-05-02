@@ -35,7 +35,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
     Navigator.pop(context);
     if (_textEditingController.text.isEmpty) {
     } else {
-      //print("ブレークポイント");
       // kEventSource = {
       //   _focusedDay: [Event(title: _textEditingController.text)]
       // };
@@ -45,7 +44,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
       // });
       kEvents[_focusedDay]?.add(Event(title: _textEditingController.text));
       print(kEvents[_focusedDay]);
-
       // kEvents.addAll({
       //   DateTime(2022, 4, 30, 12, 15): [
       //     Event(title: _textEditingController.text)
@@ -65,19 +63,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
         .catchError(
           (error) => print("Failed to add event...: $error"),
         );
-    // return events
-    //     .doc()
-    //     .set({
-    //       'diaryContent': _text,
-    //       'diaryDateTime': _focusedDay,
-    //       'wordCount': charLength
-    //     })
-    //     .then(
-    //       (value) => print("Event Added!!!"),
-    //     )
-    //     .catchError(
-    //       (error) => print("Failed to add event...: $error"),
-    //     );
   }
 
   @override
