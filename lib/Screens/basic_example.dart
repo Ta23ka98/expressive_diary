@@ -9,6 +9,9 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 Map<DateTime, List<Event>> selectedEvents = {};
 DateTime _focusedDay = DateTime.now();
 
+final Stream<QuerySnapshot> _usersStream =
+    FirebaseFirestore.instance.collection('users').snapshots();
+
 /// Example event class.
 class Event {
   final String title;

@@ -15,7 +15,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   int charLength = 0;
   String _text = '';
   DateTime _focusedDay = DateTime.now();
-  CollectionReference events = FirebaseFirestore.instance.collection('Events');
+  CollectionReference events =
+      FirebaseFirestore.instance.collection('EventList');
 
   @override
   void dispose() {
@@ -56,17 +57,27 @@ class _AddEventScreenState extends State<AddEventScreen> {
     }
     return events
         .doc()
-        .set({
-          'diaryContent': _text,
-          'diaryDateTime': _focusedDay,
-          'wordCount': charLength
-        })
+        .set(
+            {'Diary': _text, 'DiaryDate': _focusedDay, 'WordCount': charLength})
         .then(
           (value) => print("Event Added!!!"),
         )
         .catchError(
           (error) => print("Failed to add event...: $error"),
         );
+    // return events
+    //     .doc()
+    //     .set({
+    //       'diaryContent': _text,
+    //       'diaryDateTime': _focusedDay,
+    //       'wordCount': charLength
+    //     })
+    //     .then(
+    //       (value) => print("Event Added!!!"),
+    //     )
+    //     .catchError(
+    //       (error) => print("Failed to add event...: $error"),
+    //     );
   }
 
   @override
