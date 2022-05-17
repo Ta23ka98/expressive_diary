@@ -15,7 +15,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   int charLength = 0;
   String _text = '';
   DateTime _focusedDay = DateTime.now();
-  CollectionReference events =
+  CollectionReference eventList =
       FirebaseFirestore.instance.collection('EventList');
 
   @override
@@ -53,7 +53,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
       //print("kEvents:${kEvents}");
       setState(() {});
     }
-    return events
+    return eventList
         .doc()
         .set(
             {'Diary': _text, 'DiaryDate': _focusedDay, 'WordCount': charLength})
