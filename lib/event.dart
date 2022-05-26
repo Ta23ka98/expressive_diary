@@ -19,7 +19,7 @@ class Event {
   Map<String, Object?> toJson() {
     Timestamp? deletedTimestamp;
     if (deletedAt != null) {
-      deletedTimestamp = Timestamp.fromDate(deletedAt!);
+      deletedTimestamp = Timestamp.fromDate(deletedAt);
     }
     return {
       'title': title,
