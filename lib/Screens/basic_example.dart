@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'add_event_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Map<DateTime, List<Event>> selectedEvents = {};
 DateTime _focusedDay = DateTime.now();
