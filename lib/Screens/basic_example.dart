@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:expressive_diary/eventRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
@@ -38,6 +39,21 @@ List<Event> _getEventsForDay(DateTime day) {
   return kEvents[day] ?? [];
 }
 
+Future getRepository() async {
+  final eventRepository = EventRepository();
+  //データの取得のサンプル
+  final events = await eventRepository.getEvents();
+  for (var event in events) {
+    var eventId = event.id;
+    var eventTitle = event.data().title;
+    var eventDate = event.data().createdAt;
+    print("ドキュメントID:" + eventId);
+    print("学校名" + eventTitle);
+    print("作成日時:" + eventDate.toString());
+    kEvents[eventDate]?.add(Event(title: eventTitle));
+  }
+}
+
 Map<DateTime, List<Event>> kEventSource = {
   _focusedDay: [Event(title: "今日の日記")],
   DateTime(2022, 4, 28, 12, 15): [
@@ -60,6 +76,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
   @override
   void initState() {
     super.initState();
+    getRepository();
     //_selectedDay = _focusedDay;
     //_selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
