@@ -1,3 +1,4 @@
+import 'package:expressive_diary/Screens/login_screen.dart';
 import 'package:expressive_diary/Screens/menu_screen.dart';
 import 'package:expressive_diary/Screens/user_screen.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
             locale,
           ],
           title: _title,
-          home: MyStatefulWidget(),
+          home: LoginScreen(),
         );
       },
     );

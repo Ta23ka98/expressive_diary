@@ -13,8 +13,8 @@ class EventRepository {
     return eventSnapshot.docs;
   }
 
-  Future<String> insert(Event event) async {
-    final data = await eventsManager.add(event.toJson());
-    return data.id;
-  }
+  // Future<String> insert(Event event) async {
+  //   final data = await eventsManager.add(event.toJson());
+  //   return data.id;
+  // }
 }

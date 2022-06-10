@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'basic_example.dart';
 
 class AddEventScreen extends StatefulWidget {
@@ -15,8 +14,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   int charLength = 0;
   String _text = '';
   DateTime _focusedDay = DateTime.now();
-  CollectionReference eventList =
-      FirebaseFirestore.instance.collection('EventList');
+  CollectionReference eventCollection =
+      FirebaseFirestore.instance.collection('EventExample');
 
   @override
   void dispose() {
@@ -32,31 +31,21 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
 
   Future<void> addEvent() {
-    Navigator.pop(context);
     if (_textEditingController.text.isEmpty) {
     } else {
-      // kEventSource = {
-      //   _focusedDay: [Event(title: _textEditingController.text)]
-      // };
-      //todayListEvents?.add(Event(title: _textEditingController.text));
-      // kEvents.addAll({
-      //   _focusedDay: [Event(title: _textEditingController.text)]
-      // });
       kEvents[_focusedDay]?.add(Event(title: _textEditingController.text));
       print(kEvents[_focusedDay]);
-      // kEvents.addAll({
-      //   DateTime(2022, 4, 30, 12, 15): [
-      //     Event(title: _textEditingController.text)
-      //   ]
-      // });
-      //print("kEventSource：${kEventSource}");
-      //print("kEvents:${kEvents}");
+      getRepository();
       setState(() {});
+      Navigator.pop(context);
     }
-    return eventList
+    return eventCollection
         .doc()
-        .set(
-            {'Diary': _text, 'DiaryDate': _focusedDay, 'WordCount': charLength})
+        .set({
+          'description': _text,
+          'createdAt': _focusedDay,
+          'wordCount': charLength
+        })
         .then(
           (value) => print("Event Added!!!"),
         )

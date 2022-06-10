@@ -3,13 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Event {
   final String title;
+  final int wordCount;
   final DateTime createdAt;
 
-  Event({required this.title, required this.createdAt});
+  Event(
+      {required this.title, required this.wordCount, required this.createdAt});
 
   Event.fromJson(Map<String, Object?> json)
       : this(
           title: json['description']! as String,
+          wordCount: json['wordCount'] as int,
           createdAt: (json['createdAt']! as Timestamp).toDate() as DateTime,
         );
 

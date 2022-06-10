@@ -3,9 +3,7 @@ import 'package:expressive_diary/eventRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../utils.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'add_event_screen.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Map<DateTime, List<Event>> selectedEvents = {};
 DateTime _focusedDay = DateTime.now();
@@ -16,10 +14,6 @@ class Event {
   const Event({required this.title});
   @override
   String toString() => title;
-}
-
-class EventList {
-  final List eventList = [];
 }
 
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
@@ -48,7 +42,7 @@ Future getRepository() async {
     var eventTitle = event.data().title;
     var eventDate = event.data().createdAt;
     print("ドキュメントID:" + eventId);
-    print("学校名" + eventTitle);
+    print("イベント名：" + eventTitle);
     print("作成日時:" + eventDate.toString());
     kEvents[eventDate]?.add(Event(title: eventTitle));
   }
