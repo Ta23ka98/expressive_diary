@@ -3,10 +3,9 @@ import 'package:expressive_diary/Screens/menu_screen.dart';
 import 'package:expressive_diary/Screens/user_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'basic_example.dart';
 import '../events_example.dart';
@@ -57,9 +56,11 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  // MyStatefulWidget(this.user);
+  // final User user;
+  // static const TextStyle optionStyle =
+  // TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
     DiaryScreen(),
     const UserScreen(),
