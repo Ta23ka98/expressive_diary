@@ -15,6 +15,11 @@ class _LoginScreenState extends State<LoginScreen> {
   String userPassword = "";
   String infoText = "";
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<void> SignUp() async {
     try {
       final UserCredential result = await auth.createUserWithEmailAndPassword(

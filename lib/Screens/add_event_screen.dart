@@ -30,6 +30,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
     });
   }
 
+  void addEventMethod() {
+    addEvent();
+    getRepository();
+  }
+
   Future<void> addEvent() {
     if (_textEditingController.text.isEmpty) {
     } else {
@@ -93,7 +98,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: addEvent,
+                onPressed: addEventMethod,
                 child: const Text("完了"),
               ),
             )

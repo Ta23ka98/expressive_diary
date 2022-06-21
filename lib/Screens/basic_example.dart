@@ -70,7 +70,6 @@ class _DiaryScreenState extends State<DiaryScreen> {
   @override
   void initState() {
     super.initState();
-    getRepository();
     //_selectedDay = _focusedDay;
     //_selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }

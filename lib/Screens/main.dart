@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return const MaterialApp(
+        return MaterialApp(
           locale: locale,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -41,7 +41,18 @@ class MyApp extends StatelessWidget {
             locale,
           ],
           title: _title,
-          home: LoginScreen(),
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox();
+              }
+              if (snapshot.hasData) {
+                return MyStatefulWidget();
+              }
+              return LoginScreen();
+            },
+          ),
         );
       },
     );
@@ -56,10 +67,28 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  // MyStatefulWidget(this.user);
-  // final User user;
-  // static const TextStyle optionStyle =
-  // TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  @override
+  void initState() {
+    super.initState();
+    getRepository();
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Name, email address, and profile photo URL
+      final name = user.displayName;
+      final email = user.email;
+      final photoUrl = user.photoURL;
+
+      // Check if user's email is verified
+      final emailVerified = user.emailVerified;
+
+      // The user's ID, unique to the Firebase project. Do NOT use this value to
+      // authenticate with your backend server, if you have one. Use
+      // User.getIdToken() instead.
+      final uid = user.uid;
+    }
+  }
+
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     DiaryScreen(),
