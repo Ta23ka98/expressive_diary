@@ -77,7 +77,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       // Name, email address, and profile photo URL
       final name = user.displayName;
       final email = user.email;
-      final photoUrl = user.photoURL;
 
       // Check if user's email is verified
       final emailVerified = user.emailVerified;
@@ -92,7 +91,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     DiaryScreen(),
-    const UserScreen(),
+    UserScreen(),
     const MenuScreen(),
   ];
 
