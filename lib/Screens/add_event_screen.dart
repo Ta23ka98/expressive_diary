@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'basic_example.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   DateTime _focusedDay = DateTime.now();
   CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('EventExample');
+  final String userID = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void dispose() {
@@ -49,7 +51,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
         .set({
           'description': _text,
           'createdAt': _focusedDay,
-          'wordCount': charLength
+          'wordCount': charLength,
+          'madeBy': userID,
         })
         .then(
           (value) => print("Event Added!!!"),

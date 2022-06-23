@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'event.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final String userID = FirebaseAuth.instance.currentUser!.uid;
 
 class EventRepository {
-  final eventsManager = FirebaseFirestore.instance.collection('EventExample');
+  final eventsManager = FirebaseFirestore.instance
+      .collection('EventExample')
+      .where("madeBy", isEqualTo: userID);
 
   Future<List<QueryDocumentSnapshot<Event>>> getEvents() async {
     final eventRef = eventsManager.withConverter<Event>(
@@ -12,9 +17,4 @@ class EventRepository {
     final eventSnapshot = await eventRef.get();
     return eventSnapshot.docs;
   }
-
-  // Future<String> insert(Event event) async {
-  //   final data = await eventsManager.add(event.toJson());
-  //   return data.id;
-  // }
 }
