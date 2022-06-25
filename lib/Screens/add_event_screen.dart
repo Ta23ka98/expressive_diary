@@ -15,9 +15,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
   int charLength = 0;
   String _text = '';
   DateTime _focusedDay = DateTime.now();
+  final String userID = FirebaseAuth.instance.currentUser!.uid;
   CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('EventExample');
-  final String userID = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void dispose() {
@@ -46,6 +46,25 @@ class _AddEventScreenState extends State<AddEventScreen> {
       setState(() {});
       Navigator.pop(context);
     }
+    return eventCollection
+        .doc()
+        .set({
+          'description': _text,
+          'createdAt': _focusedDay,
+          'wordCount': charLength,
+          'madeBy': userID,
+        })
+        .then(
+          (value) => print("Event Added!!!"),
+        )
+        .catchError(
+          (error) => print("Failed to add event...: $error"),
+        );
+  }
+
+  Future<void> updateUser() {
+    if (_textEditingController.text.isEmpty) {
+    } else {}
     return eventCollection
         .doc()
         .set({
