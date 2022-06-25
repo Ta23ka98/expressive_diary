@@ -16,8 +16,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
   String _text = '';
   DateTime _focusedDay = DateTime.now();
   final String userID = FirebaseAuth.instance.currentUser!.uid;
-  CollectionReference eventCollection =
+  final CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('EventExample');
+  // final DocumentReference userCollection =
+  //     FirebaseFirestore.instance.collection("User").doc(userID);
 
   @override
   void dispose() {
