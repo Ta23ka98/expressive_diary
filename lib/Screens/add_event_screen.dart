@@ -18,8 +18,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   final String userID = FirebaseAuth.instance.currentUser!.uid;
   final CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('EventExample');
-  // final DocumentReference userCollection =
-  //     FirebaseFirestore.instance.collection("User").doc(userID);
+  late final _usersStream =
+      FirebaseFirestore.instance.collection("Users").doc(userID).snapshots();
 
   @override
   void dispose() {
@@ -36,6 +36,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
   void addEventMethod() {
     addEvent();
+    updateUser();
     getRepository();
   }
 
@@ -65,22 +66,19 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
 
   Future<void> updateUser() {
+    final usersRef = FirebaseFirestore.instance.collection('Users');
     if (_textEditingController.text.isEmpty) {
     } else {}
-    return eventCollection
-        .doc()
-        .set({
-          'description': _text,
-          'createdAt': _focusedDay,
-          'wordCount': charLength,
-          'madeBy': userID,
-        })
-        .then(
-          (value) => print("Event Added!!!"),
-        )
-        .catchError(
-          (error) => print("Failed to add event...: $error"),
-        );
+    return usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
+      final int diaryNumbers = snapshot.get("diaryNumbers");
+      final int newDiaryNumbers = diaryNumbers + 1;
+      final int diaryLetters = snapshot.get("diaryLetters");
+      final int newDiaryLetters = diaryLetters + charLength;
+      usersRef.doc(userID).update({
+        "diaryNumbers": newDiaryNumbers,
+        "diaryLetters": newDiaryLetters,
+      });
+    });
   }
 
   @override
