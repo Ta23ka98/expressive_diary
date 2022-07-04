@@ -43,7 +43,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
     usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
       final int userLevel = snapshot.get("userLevel");
       final int diaryLetters = snapshot.get("diaryLetters");
-      //final int userLevelUp = userLevel + 1;
 
       for (int L = 1; L < 100; L++) {
         final int minimum = 5 * (L - 1) * (L - 1);
