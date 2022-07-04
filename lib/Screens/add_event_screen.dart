@@ -38,17 +38,21 @@ class _AddEventScreenState extends State<AddEventScreen> {
     addEvent();
     updateUser();
     getRepository();
+
     final usersRef = FirebaseFirestore.instance.collection('Users');
     usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
       final int userLevel = snapshot.get("userLevel");
       final int diaryLetters = snapshot.get("diaryLetters");
       final int userLevelUp = userLevel + 1;
-      if (5 * (userLevel - 1) ^ 2 <= diaryLetters &&
-          diaryLetters < 5 * userLevel ^ 2 == true) {
-        usersRef.doc(userID).update({
-          "userLevel": userLevelUp,
-        });
-      } else {}
+
+      for (int L = 1; L < 100; L++) {
+        if (5 * (L - 1) ^ 2 <= diaryLetters &&
+            diaryLetters < (5 * L ^ 2) + 1 == true) {
+          usersRef.doc(userID).update({
+            "userLevel": L,
+          });
+        } else {}
+      }
     });
   }
 
