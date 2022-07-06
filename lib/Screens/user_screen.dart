@@ -25,6 +25,8 @@ class UserScreen extends StatelessWidget {
         final int userLevel = snapshot.data!["userLevel"];
         final int diaryNumbers = snapshot.data!["diaryNumbers"];
         final int diaryLetters = snapshot.data!["diaryLetters"];
+        final int lettersUntilNextLevel =
+            snapshot.data!["lettersUntilNextLevel"];
         return Column(
           children: [
             SizedBox(
@@ -45,7 +47,7 @@ class UserScreen extends StatelessWidget {
             Divider(),
             ListTile(title: Text('これまでの字数：$diaryLetters')),
             Divider(),
-            ListTile(title: Text('次のレベルアップまで：○字')),
+            ListTile(title: Text('次のレベルアップまで：$lettersUntilNextLevel字')),
             Divider(),
           ],
         );
