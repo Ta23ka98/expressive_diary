@@ -43,17 +43,19 @@ class _AddEventScreenState extends State<AddEventScreen> {
     usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
       final int userLevel = snapshot.get("userLevel");
       final int diaryLetters = snapshot.get("diaryLetters");
+      final int updatedDiaryLetters = diaryLetters + charLength;
       for (int L = 100; L > 0; L--) {
         final int minimum = 5 * (L - 1) * (L - 1);
         final int maximum = (5 * L * L) + 1;
         final int newLevel = L;
         if (minimum <= diaryLetters && diaryLetters < maximum) {
-          final int newLettersUntilNextLevel = maximum - diaryLetters;
-          usersRef.doc(userID).update({
-            "userLevel": newLevel,
-            "lettersUntilNextLevel": newLettersUntilNextLevel,
-          });
+          break;
         } else {}
+        final int newLettersUntilNextLevel = maximum - updatedDiaryLetters;
+        usersRef.doc(userID).update({
+          "userLevel": newLevel,
+          "lettersUntilNextLevel": newLettersUntilNextLevel,
+        });
       }
     });
   }
