@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserScreen extends StatelessWidget {
-  final userID = FirebaseAuth.instance.currentUser?.uid;
+  late final userID = FirebaseAuth.instance.currentUser?.uid;
   late final _usersStream =
       FirebaseFirestore.instance.collection("Users").doc(userID).snapshots();
 

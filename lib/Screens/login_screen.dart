@@ -1,6 +1,7 @@
 import 'package:expressive_diary/Screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,6 +27,26 @@ class _LoginScreenState extends State<LoginScreen> {
         email: userEmail,
         password: userPassword,
       );
+
+      late final userID = FirebaseAuth.instance.currentUser?.uid;
+
+      final CollectionReference userCollection =
+          FirebaseFirestore.instance.collection('Users');
+      userCollection
+          .doc(userID)
+          .set({
+            'name': "ゲスト",
+            'userLevel': 1,
+            'diaryNumbers': 0,
+            'diaryLetters': 0,
+            'lettersUntilNextLevel': 5,
+          })
+          .then(
+            (value) => print("User Added!!!"),
+          )
+          .catchError(
+            (error) => print("Failed to add user...: $error"),
+          );
 
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
