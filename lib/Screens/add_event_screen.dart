@@ -37,7 +37,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   void addEventMethod() {
     addEvent();
     updateUser();
-    getRepository();
+    //getRepository();
 
     final usersRef = FirebaseFirestore.instance.collection('Users');
     usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
@@ -65,7 +65,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     } else {
       kEvents[_focusedDay]?.add(Event(title: _textEditingController.text));
       print(kEvents[_focusedDay]);
-      getRepository();
+      //getRepository();
       setState(() {});
       Navigator.pop(context);
     }

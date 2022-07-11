@@ -10,11 +10,19 @@ class EventRepository {
       .collection('EventExample')
       .where("madeBy", isEqualTo: userID);
 
-  Future<List<QueryDocumentSnapshot<Event>>> getEvents() async {
+  // Future<List<QueryDocumentSnapshot<Event>>> getEvents() async {
+  //   final eventRef = eventsManager.withConverter<Event>(
+  //       fromFirestore: (snapshot, _) => Event.fromJson(snapshot.data()!),
+  //       toFirestore: (event, _) => event.toJson());
+  //   final eventSnapshot = await eventRef.get();
+  //   return eventSnapshot.docs;
+  // }
+
+  Stream<QuerySnapshot<Event>> getEvents() {
     final eventRef = eventsManager.withConverter<Event>(
         fromFirestore: (snapshot, _) => Event.fromJson(snapshot.data()!),
         toFirestore: (event, _) => event.toJson());
-    final eventSnapshot = await eventRef.get();
-    return eventSnapshot.docs;
+    final eventSnapshot = eventRef.snapshots();
+    return eventSnapshot;
   }
 }
