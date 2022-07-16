@@ -63,7 +63,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Future<void> addEvent() {
     if (_textEditingController.text.isEmpty) {
     } else {
-      kEvents[_focusedDay]?.add(Event(title: _textEditingController.text));
+      kEvents[_focusedDay]
+          ?.add(SampleEvent(title: _textEditingController.text));
       print(kEvents[_focusedDay]);
       //getRepository();
       setState(() {});

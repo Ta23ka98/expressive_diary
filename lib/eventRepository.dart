@@ -18,11 +18,21 @@ class EventRepository {
   //   return eventSnapshot.docs;
   // }
 
-  Stream<QuerySnapshot<Event>> getEvents() {
+  // Stream<QuerySnapshot<Event>> getEvents() {
+  //   final eventRef = eventsManager.withConverter<Event>(
+  //       fromFirestore: (snapshot, _) => Event.fromJson(snapshot.data()!),
+  //       toFirestore: (event, _) => event.toJson());
+  //   final eventSnapshot = eventRef.snapshots();
+  //   return eventSnapshot;
+  // }
+
+  Stream<List<Event>> subscribeEvents() {
     final eventRef = eventsManager.withConverter<Event>(
         fromFirestore: (snapshot, _) => Event.fromJson(snapshot.data()!),
         toFirestore: (event, _) => event.toJson());
     final eventSnapshot = eventRef.snapshots();
-    return eventSnapshot;
+    final result =
+        eventSnapshot.map((qs) => qs.docs.map((qds) => qds.data()).toList());
+    return result;
   }
 }
