@@ -14,12 +14,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   int charLength = 0;
   String _text = '';
-  DateTime _focusedDay = DateTime.now();
+  final DateTime _focusedDay = DateTime.now();
   final String userID = FirebaseAuth.instance.currentUser!.uid;
   final CollectionReference eventCollection =
       FirebaseFirestore.instance.collection('EventExample');
-  late final _usersStream =
-      FirebaseFirestore.instance.collection("Users").doc(userID).snapshots();
 
   @override
   void dispose() {
@@ -37,34 +35,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
   void addEventMethod() {
     addEvent();
     updateUser();
-    //getRepository();
-
-    final usersRef = FirebaseFirestore.instance.collection('Users');
-    usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
-      final int userLevel = snapshot.get("userLevel");
-      final int diaryLetters = snapshot.get("diaryLetters");
-      final int updatedDiaryLetters = diaryLetters + charLength;
-      for (int L = 100; L > 0; L--) {
-        final int minimum = 5 * (L - 1) * (L - 1);
-        final int maximum = (5 * L * L) + 1;
-        final int newLevel = L;
-        if (minimum <= diaryLetters && diaryLetters < maximum) {
-          break;
-        } else {}
-        final int newLettersUntilNextLevel = maximum - updatedDiaryLetters;
-        usersRef.doc(userID).update({
-          "userLevel": newLevel,
-          "lettersUntilNextLevel": newLettersUntilNextLevel,
-        });
-      }
-    });
+    LevelUp();
   }
 
   Future<void> addEvent() {
     if (_textEditingController.text.isEmpty) {
     } else {
-      kEvents[_focusedDay]
-          ?.add(SampleEvent(title: _textEditingController.text));
+      kEvents[_focusedDay]?.add(UtilsEvent(title: _textEditingController.text));
       print(kEvents[_focusedDay]);
       //getRepository();
       setState(() {});
@@ -99,6 +76,27 @@ class _AddEventScreenState extends State<AddEventScreen> {
         "diaryNumbers": newDiaryNumbers,
         "diaryLetters": newDiaryLetters,
       });
+    });
+  }
+
+  Future<void> LevelUp() async {
+    final usersRef = FirebaseFirestore.instance.collection('Users');
+    usersRef.doc(userID).get().then((DocumentSnapshot snapshot) {
+      final int diaryLetters = snapshot.get("diaryLetters");
+      final int updatedDiaryLetters = diaryLetters + charLength;
+      for (int L = 100; L > 0; L--) {
+        final int minimum = 5 * (L - 1) * (L - 1);
+        final int maximum = (5 * L * L) + 1;
+        final int newLevel = L;
+        if (minimum <= diaryLetters && diaryLetters < maximum) {
+          break;
+        } else {}
+        final int newLettersUntilNextLevel = maximum - updatedDiaryLetters;
+        usersRef.doc(userID).update({
+          "userLevel": newLevel,
+          "lettersUntilNextLevel": newLettersUntilNextLevel,
+        });
+      }
     });
   }
 

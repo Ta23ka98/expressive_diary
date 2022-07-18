@@ -1,3 +1,4 @@
+import 'package:expressive_diary/Screens/frame_widget.dart';
 import 'package:expressive_diary/Screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) {
-            return MyStatefulWidget();
+            return FrameWidget();
           },
         ),
       );
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) {
-            return MyStatefulWidget();
+            return FrameWidget();
           },
         ),
       );

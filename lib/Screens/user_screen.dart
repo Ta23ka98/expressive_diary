@@ -1,8 +1,6 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserScreen extends StatelessWidget {
   late final userID = FirebaseAuth.instance.currentUser?.uid;
@@ -16,10 +14,10 @@ class UserScreen extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return const Text("Something went wrong");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return const Text("Loading");
         }
         final String userName = snapshot.data!["name"];
         final int userLevel = snapshot.data!["userLevel"];
@@ -29,7 +27,7 @@ class UserScreen extends StatelessWidget {
             snapshot.data!["lettersUntilNextLevel"];
         return Column(
           children: [
-            SizedBox(
+            const SizedBox(
               child: Center(
                   child: Text(
                 "ユーザー画面",
@@ -37,18 +35,18 @@ class UserScreen extends StatelessWidget {
               )),
               height: 60,
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-                leading: Icon(Icons.person),
+                leading: const Icon(Icons.person),
                 title: Text('$userNameさん'),
                 subtitle: Text('現在のレベル：$userLevel')),
-            Divider(),
+            const Divider(),
             ListTile(title: Text('日記の総数：$diaryNumbers')),
-            Divider(),
+            const Divider(),
             ListTile(title: Text('これまでの字数：$diaryLetters')),
-            Divider(),
+            const Divider(),
             ListTile(title: Text('次のレベルアップまで：$lettersUntilNextLevel字')),
-            Divider(),
+            const Divider(),
           ],
         );
       },
