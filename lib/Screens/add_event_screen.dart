@@ -44,7 +44,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     } else {
       kEvents[_focusedDay]?.add(Event(
           title: _textEditingController.text,
-          createdAt: _focusedDay,
+          createdAt: Timestamp.fromDate(_focusedDay),
           wordCount: charLength));
       print(kEvents[_focusedDay]);
       //getRepository();

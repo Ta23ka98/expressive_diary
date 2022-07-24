@@ -229,7 +229,7 @@ class _UserInformationState extends State<UserInformation> {
       stream: EventRepository().subscribeEvents(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('Something went wrong');
+          return Text(snapshot.error.toString());
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading");
@@ -242,8 +242,12 @@ class _UserInformationState extends State<UserInformation> {
           return const Text("No data");
         }
 
-        final events = snapshot.data! as Map<DateTime, List<Event>>;
-        kEvents.addAll(events);
+        final events = snapshot.data!;
+        for (var event in events) {
+          kEvents[event.createdAt?.toDate()]?.add(event);
+        }
+
+        //kEvents[DateTime.now()] = events!;
 
         ///kEvents = events.map((event) => null).toList();
         //print(events[1].title);
