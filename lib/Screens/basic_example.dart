@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expressive_diary/eventRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -244,8 +245,18 @@ class _UserInformationState extends State<UserInformation> {
 
         final events = snapshot.data!;
         for (var event in events) {
-          kEvents[event.createdAt?.toDate()]?.add(event);
+          var eventDate = event.createdAt!.toDate();
+          var eventTitle = event.title;
+          var wordCount = event.wordCount;
+          Timestamp createdAtTimestamp = Timestamp.fromDate(eventDate);
+          kEvents[eventDate] = [
+            Event(
+                title: eventTitle,
+                wordCount: wordCount,
+                createdAt: createdAtTimestamp)
+          ];
         }
+        print(kEvents);
 
         //kEvents[DateTime.now()] = events!;
 
@@ -323,7 +334,7 @@ class _UserInformationState extends State<UserInformation> {
                             ),
                             child: ListTile(
                               onTap: () => print('${value[index]}'),
-                              title: Text('${value[index]}'),
+                              title: Text('${value[index].title}'),
                             ),
                           );
                         },

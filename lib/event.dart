@@ -11,8 +11,8 @@ class Event {
   Event.fromJson(Map<String, dynamic> json)
       : this(
           title: json['description'],
-          wordCount: json['wordCount'],
-          createdAt: json['createdAt'],
+          wordCount: json['wordCount'] ?? 0,
+          createdAt: json['createdAt'] ?? Timestamp.fromDate(DateTime.now()),
         );
 
   Map<String, Object?> toJson() {
