@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expressive_diary/event.dart';
 import 'package:flutter/material.dart';
 import 'basic_example.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +42,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Future<void> addEvent() {
     if (_textEditingController.text.isEmpty) {
     } else {
-      kEvents[_focusedDay]?.add(UtilsEvent(title: _textEditingController.text));
+      kEvents[_focusedDay]?.add(Event(
+          title: _textEditingController.text,
+          createdAt: Timestamp.fromDate(_focusedDay),
+          wordCount: charLength));
       print(kEvents[_focusedDay]);
       //getRepository();
       setState(() {});
@@ -51,8 +55,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
         .doc()
         .set({
           'description': _text,
-          'createdAt': _focusedDay,
-          'wordCount': charLength,
+          // 'createdAt': _focusedDay,
+          // 'wordCount': charLength,
           'madeBy': userID,
         })
         .then(

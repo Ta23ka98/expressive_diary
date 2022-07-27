@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Event {
   final String title;
-  final int wordCount;
-  final DateTime createdAt;
+  final int? wordCount;
+  final Timestamp? createdAt;
 
   Event(
       {required this.title, required this.wordCount, required this.createdAt});
 
-  Event.fromJson(Map<String, Object?> json)
+  Event.fromJson(Map<String, dynamic> json)
       : this(
-          title: json['description']! as String,
-          wordCount: json['wordCount'] as int,
-          createdAt: (json['createdAt']! as Timestamp).toDate() as DateTime,
+          title: json['description'],
+          wordCount: json['wordCount'] ?? 0,
+          createdAt: json['createdAt'] ?? Timestamp.fromDate(DateTime.now()),
         );
 
   Map<String, Object?> toJson() {
@@ -22,8 +22,7 @@ class Event {
     // }
     return {
       'title': title,
-      'createdAt':
-          Timestamp.fromDate(createdAt), //DartのDateTimeからFirebaseのTimestampへ変換
+      'createdAt': createdAt, //DartのDateTimeからFirebaseのTimestampへ変換
       //'deletedAt': deletedTimestamp
     };
   }

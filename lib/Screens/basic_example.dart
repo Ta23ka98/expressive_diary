@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expressive_diary/eventRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -6,19 +7,19 @@ import '../event.dart';
 import '../utils.dart' as utils;
 import 'add_event_screen.dart';
 
-Map<DateTime, List<UtilsEvent>> selectedEvents = {};
+Map<DateTime, List<Event>> selectedEvents = {};
 DateTime _focusedDay = DateTime.now();
 
 /// Example event class.
-class UtilsEvent {
-  final String title;
-  const UtilsEvent({required this.title});
-  @override
-  String toString() => title;
-}
+// class Event {
+//   final String title;
+//   const Event({required this.title});
+//   @override
+//   String toString() => title;
+// }
 
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-var kEvents = LinkedHashMap<DateTime, List<UtilsEvent>>(
+var kEvents = LinkedHashMap<DateTime, List<Event>>(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(kEventSource);
@@ -29,7 +30,7 @@ int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
-List<UtilsEvent> _getEventsForDay(DateTime day) {
+List<Event> _getEventsForDay(DateTime day) {
   // Implementation example
   return kEvents[day] ?? [];
 }
@@ -54,12 +55,12 @@ Future getRepository() async {
   final eventStream = await eventRepository.subscribeEvents();
 }
 
-Map<DateTime, List<UtilsEvent>> kEventSource = {
-  _focusedDay: [const UtilsEvent(title: "今日の日記")],
-  DateTime(2022, 4, 28, 12, 15): [
-    const UtilsEvent(title: "4/28-1"),
-    const UtilsEvent(title: "4/28-2")
-  ],
+Map<DateTime, List<Event>> kEventSource = {
+  // _focusedDay: [const Event(title: "今日の日記")],
+  // DateTime(2022, 4, 28, 12, 15): [
+  //   const Event(title: "4/28-1"),
+  //   const Event(title: "4/28-2")
+  // ],
 };
 
 class DiaryScreen extends StatefulWidget {
@@ -69,7 +70,7 @@ class DiaryScreen extends StatefulWidget {
 
 class _DiaryScreenState extends State<DiaryScreen> {
   DateTime? _selectedDay = _focusedDay;
-  late final ValueNotifier<List<UtilsEvent>> _selectedEvents =
+  late final ValueNotifier<List<Event>> _selectedEvents =
       ValueNotifier(_getEventsForDay(_selectedDay!));
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -113,7 +114,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
               height: 50,
             ),
             const Divider(),
-            TableCalendar<UtilsEvent>(
+            TableCalendar<Event>(
               firstDay: utils.kFirstDay,
               lastDay: utils.kLastDay,
               focusedDay: _focusedDay,
@@ -141,7 +142,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
             ),
             const SizedBox(height: 8.0),
             SizedBox(
-              child: ValueListenableBuilder<List<UtilsEvent>>(
+              child: ValueListenableBuilder<List<Event>>(
                 valueListenable: _selectedEvents,
                 builder: (context, value, _) {
                   return ListView.builder(
@@ -193,7 +194,7 @@ class UserInformation extends StatefulWidget {
 class _UserInformationState extends State<UserInformation> {
   final eventStream = EventRepository().subscribeEvents();
   DateTime? _selectedDay = _focusedDay;
-  late ValueNotifier<List<UtilsEvent>> _selectedEvents =
+  late ValueNotifier<List<Event>> _selectedEvents =
       ValueNotifier(_getEventsForDay(_selectedDay!));
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -202,7 +203,7 @@ class _UserInformationState extends State<UserInformation> {
     super.initState();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-    print(eventStream);
+    //print(eventStream);
   }
 
   @override
@@ -229,7 +230,7 @@ class _UserInformationState extends State<UserInformation> {
       stream: EventRepository().subscribeEvents(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('Something went wrong');
+          return Text(snapshot.error.toString());
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading");
@@ -241,9 +242,29 @@ class _UserInformationState extends State<UserInformation> {
         if (!snapshot.hasData) {
           return const Text("No data");
         }
+
         final events = snapshot.data!;
+        for (var event in events) {
+          var eventDate = event.createdAt!.toDate();
+          var eventTitle = event.title;
+          var wordCount = event.wordCount;
+          Timestamp createdAtTimestamp = Timestamp.fromDate(eventDate);
+          kEvents[eventDate] = [
+            Event(
+                title: eventTitle,
+                wordCount: wordCount,
+                createdAt: createdAtTimestamp)
+          ];
+        }
+        print(kEvents);
+
+        //kEvents[DateTime.now()] = events!;
 
         ///kEvents = events.map((event) => null).toList();
+        //print(events[1].title);
+        // events.forEach((element) {
+        //   kEvents.addEntries(events.elementAt(element).createdAt: UtilsEvent(title: events[element].title));
+        // });
 
         //print(snapshot.data!.docs.first.data().toString());
         // snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -266,7 +287,7 @@ class _UserInformationState extends State<UserInformation> {
                   height: 50,
                 ),
                 const Divider(),
-                TableCalendar<UtilsEvent>(
+                TableCalendar<Event>(
                   firstDay: utils.kFirstDay,
                   lastDay: utils.kLastDay,
                   focusedDay: _focusedDay,
@@ -294,7 +315,7 @@ class _UserInformationState extends State<UserInformation> {
                 ),
                 const SizedBox(height: 8.0),
                 SizedBox(
-                  child: ValueListenableBuilder<List<UtilsEvent>>(
+                  child: ValueListenableBuilder<List<Event>>(
                     valueListenable: _selectedEvents,
                     builder: (context, value, _) {
                       return ListView.builder(
@@ -313,7 +334,7 @@ class _UserInformationState extends State<UserInformation> {
                             ),
                             child: ListTile(
                               onTap: () => print('${value[index]}'),
-                              title: Text('${value[index]}'),
+                              title: Text('${value[index].title}'),
                             ),
                           );
                         },
