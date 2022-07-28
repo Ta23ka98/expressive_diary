@@ -42,21 +42,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Future<void> addEvent() {
     if (_textEditingController.text.isEmpty) {
     } else {
-      kEvents[_focusedDay]?.add(Event(
-          title: _textEditingController.text,
-          createdAt: Timestamp.fromDate(_focusedDay),
-          wordCount: charLength));
-      print(kEvents[_focusedDay]);
-      //getRepository();
-      setState(() {});
       Navigator.pop(context);
     }
     return eventCollection
         .doc()
         .set({
           'description': _text,
-          // 'createdAt': _focusedDay,
-          // 'wordCount': charLength,
+          'createdAt': _focusedDay,
+          'wordCount': charLength,
           'madeBy': userID,
         })
         .then(
