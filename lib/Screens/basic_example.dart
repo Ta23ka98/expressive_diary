@@ -204,7 +204,7 @@ class _UserInformationState extends State<UserInformation> {
             return Text(snapshot.error.toString());
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
+            return Text("Loading");
           }
           if (!snapshot.hasData) {
             return const Text("No data");
