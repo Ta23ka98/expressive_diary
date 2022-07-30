@@ -235,28 +235,40 @@ class _UserInformationState extends State<UserInformation> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading");
         }
-        // final String eventTitle = snapshot.data!["description"];
-        // kEvents[eventDate]?.add(Event(title: eventTitle));
-        //final events = snapshot.data!.docs;
-        //print(events);
         if (!snapshot.hasData) {
           return const Text("No data");
         }
 
         final events = snapshot.data!;
+        Map<DateTime, List<Event>> eventMap = new Map();
         for (var event in events) {
           var eventDate = event.createdAt!.toDate();
           var eventTitle = event.title;
           var wordCount = event.wordCount;
           Timestamp createdAtTimestamp = Timestamp.fromDate(eventDate);
-          kEvents[eventDate] = [
-            Event(
+          if (kEvents[eventDate] == null) {
+            kEvents[eventDate] = [
+              Event(
+                  title: eventTitle,
+                  wordCount: wordCount,
+                  createdAt: createdAtTimestamp)
+            ];
+          } else {
+            kEvents[eventDate]!.add(Event(
                 title: eventTitle,
                 wordCount: wordCount,
-                createdAt: createdAtTimestamp)
-          ];
+                createdAt: createdAtTimestamp));
+          }
+
+          // kEvents[eventDate] = [
+          //   Event(
+          //       title: eventTitle,
+          //       wordCount: wordCount,
+          //       createdAt: createdAtTimestamp)
+          // ];
         }
-        print(kEvents);
+        kEventSource = eventMap;
+        print(kEvents[_selectedDay]?.length);
 
         //kEvents[DateTime.now()] = events!;
 
@@ -333,7 +345,7 @@ class _UserInformationState extends State<UserInformation> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: ListTile(
-                              onTap: () => print('${value[index]}'),
+                              onTap: () => print('${value[index].title}'),
                               title: Text('${value[index].title}'),
                             ),
                           );
