@@ -5,18 +5,15 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("メニュー画面"),
+      ),
+      body: Column(
         children: const [
           SizedBox(
-            child: Center(
-                child: Text(
-              "メニュー画面",
-              style: TextStyle(fontSize: 15),
-            )),
-            height: 60,
+            height: 10.0,
           ),
-          Divider(),
           ListTile(title: Text('アプリの使い方')),
           Divider(),
           ListTile(title: Text('利用規約')),

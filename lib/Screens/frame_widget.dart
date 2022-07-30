@@ -52,17 +52,6 @@ class _FrameWidgetState extends State<FrameWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('筆記療法アプリ'),
-        actions: [
-          IconButton(
-              onPressed: Logout,
-              icon: Icon(
-                Icons.logout,
-                color: Colors.white,
-              ))
-        ],
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
