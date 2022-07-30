@@ -207,7 +207,7 @@ class _UserInformationState extends State<UserInformation> {
             return Text("Loading");
           }
           if (!snapshot.hasData) {
-            return const Text("No data");
+            return Text("No data");
           }
 
           final events = snapshot.data!;
