@@ -195,7 +195,7 @@ class _UserInformationState extends State<UserInformation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("日記画面"),
+        title: const Text("日記画面"),
       ),
       body: StreamBuilder<List<Event>>(
         stream: EventRepository().subscribeEvents(),
