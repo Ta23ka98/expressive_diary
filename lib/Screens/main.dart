@@ -28,12 +28,12 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           locale: locale,
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: [
+          supportedLocales: const [
             locale,
           ],
           title: _title,

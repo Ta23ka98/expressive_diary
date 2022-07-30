@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expressive_diary/event.dart';
 import 'package:flutter/material.dart';
-import 'basic_example.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AddEventScreen extends StatefulWidget {

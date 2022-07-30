@@ -24,31 +24,13 @@ var kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(kEventSource);
 
-var todayListEvents = kEvents[_focusedDay]?.toList();
-
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
 List<Event> _getEventsForDay(DateTime day) {
-  // Implementation example
   return kEvents[day] ?? [];
 }
-
-// Future getRepository() async {
-//   final eventRepository = EventRepository();
-//   //データの取得のサンプル
-//   final events = await eventRepository.getEvents();
-//   for (var event in events) {
-//     var eventId = event.id;
-//     var eventTitle = event.data().title;
-//     var eventDate = event.data().createdAt;
-//     print("ドキュメントID:" + eventId);
-//     print("イベント名：" + eventTitle);
-//     print("作成日時:" + eventDate.toString());
-//     kEvents[eventDate]?.add(Event(title: eventTitle));
-//   }
-// }
 
 Future getRepository() async {
   final eventRepository = EventRepository();
@@ -240,7 +222,6 @@ class _UserInformationState extends State<UserInformation> {
         }
 
         final events = snapshot.data!;
-        Map<DateTime, List<Event>> eventMap = new Map();
         for (var event in events) {
           var eventDate = event.createdAt!.toDate();
           var eventTitle = event.title;
@@ -259,33 +240,10 @@ class _UserInformationState extends State<UserInformation> {
                 wordCount: wordCount,
                 createdAt: createdAtTimestamp));
           }
-
-          // kEvents[eventDate] = [
-          //   Event(
-          //       title: eventTitle,
-          //       wordCount: wordCount,
-          //       createdAt: createdAtTimestamp)
-          // ];
         }
-        kEventSource = eventMap;
-        print(kEvents[_selectedDay]?.length);
+        //kEventSource = eventMap;
+        print(kEvents[DateTime(2022, 07, 31)]?.length);
 
-        //kEvents[DateTime.now()] = events!;
-
-        ///kEvents = events.map((event) => null).toList();
-        //print(events[1].title);
-        // events.forEach((element) {
-        //   kEvents.addEntries(events.elementAt(element).createdAt: UtilsEvent(title: events[element].title));
-        // });
-
-        //print(snapshot.data!.docs.first.data().toString());
-        // snapshot.data!.docs.map((DocumentSnapshot document) {
-        //   Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-        //   final String description = data["description"];
-        //   final String createdAt = data["createdAt"];
-        //
-        //   kEvents[createdAt]?.add(Event(title: description));
-        // });
         return Scaffold(
           body: SingleChildScrollView(
             child: Column(
